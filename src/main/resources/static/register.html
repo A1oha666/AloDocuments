@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户注册</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+
+        .register-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .register-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .register-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .register-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .register-form button:hover {
+            background-color: #0056b3;
+        }
+
+        #message {
+            text-align: center;
+            margin-top: 15px;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+<div class="register-form">
+    <h2>用户注册</h2>
+    <input type="text" id="username" placeholder="用户名">
+    <input type="password" id="password" placeholder="密码">
+    <button onclick="register()">注册</button>
+    <div id="message"></div>
+</div>
+
+<script>
+    function register() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        if (username === '' || password === '') {
+            document.getElementById('message').innerText = '用户名和密码不能为空';
+            return;
+        }
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/user/register', true);
+        // 设置请求头为表单数据格式
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.code === 1) {
+                        document.getElementById('message').innerText = '注册成功';
+                        document.getElementById('username').value = '';
+                        document.getElementById('password').value = '';
+                    } else {
+                        document.getElementById('message').innerText = response.msg;
+                    }
+                } else {
+                    document.getElementById('message').innerText = '注册失败，请稍后重试';
+                }
+            }
+        };
+
+        // 构建表单数据格式的请求体
+        const data = `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+
+        xhr.send(data);
+    }
+</script>
+</body>
+
+</html>

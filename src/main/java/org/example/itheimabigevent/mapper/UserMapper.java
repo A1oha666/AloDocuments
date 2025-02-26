@@ -10,7 +10,7 @@ public interface UserMapper {
     @Select("select * from user where username=#{username}")
     User findByUserName(String username);
     //添加
-    @Insert("insert into user(username,password,creat_time,update_time)"+"values (#{username},#{password},now(),now())")
+    @Insert("insert into user(username,password,create_time,update_time)"+"values (#{username},#{password},now(),now())")
     void add(String username, String password);
 
 }
