@@ -4,11 +4,16 @@ import jakarta.validation.constraints.Pattern;
 import org.example.itheimabigevent.pojo.Result;
 import org.example.itheimabigevent.pojo.User;
 import org.example.itheimabigevent.service.UserService;
+import org.example.itheimabigevent.utils.JwtUtil;
 import org.example.itheimabigevent.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/user")
@@ -40,8 +45,16 @@ public class UserController {
             return Result.error("用户名不存在！");
         }
         if(LoginUser.getPassword().equals(MD5Util.getMD5String(password))) {
-            return Result.success("jwt token");
+
+            Map<String, Object> claims=new HashMap<>();
+            claims.put("id",LoginUser.getId());
+            claims.put("username",LoginUser.getUsername());
+            String token =JwtUtil.genToken(claims);
+            return Result.success(token);
         }
          return Result.error("密码错误！");
     }
+
+
+
 }

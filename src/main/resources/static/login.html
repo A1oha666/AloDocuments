@@ -88,10 +88,8 @@
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           const response = JSON.parse(xhr.responseText);
-          if (response.code === 1) {
+          if (response.code === 0) {
             document.getElementById('message').innerText = '登录成功';
-            // 登录成功后跳转到首页
-            window.location.href = '/home';
           } else {
             document.getElementById('message').innerText = response.msg;
           }

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章列表</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<h1>文章列表</h1>
+<ul id="articleList"></ul>
+
+<script>
+    // 从 localStorage 中获取 JWT 令牌
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        alert('请先登录！');
+        window.location.href = 'login.html'; // 可根据实际情况修改登录页面地址
+    } else {
+        // 发送请求获取文章列表
+        fetch('http://localhost:8080/article/list', {
+            method: 'GET',
+            headers: {
+                'Authorization': token,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('网络请求失败');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.code === 200) { // 假设成功状态码为 200，根据实际修改
+                    const articleList = document.getElementById('articleList');
+                    const articleText = data.data; // 假设文章数据在 data 字段中
+                    const articleItem = document.createElement('li');
+                    articleItem.textContent = articleText;
+                    articleList.appendChild(articleItem);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('获取文章列表出错:', error);
+                alert('获取文章列表出错，请稍后重试。');
+            });
+    }
+</script>
+</body>
+
+</html>
