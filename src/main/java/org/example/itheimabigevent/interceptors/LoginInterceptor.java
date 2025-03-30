@@ -3,6 +3,7 @@ package org.example.itheimabigevent.interceptors;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.itheimabigevent.utils.JwtUtil;
+import org.example.itheimabigevent.utils.ThreadLocalUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         //验证token
         try {
             Map<String,Object> claims = JwtUtil.parseToken(token);
+            ThreadLocalUtil.set(claims);
             return true;
         } catch (Exception e) {
             //http 响应状态码为401
