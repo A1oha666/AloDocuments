@@ -18,10 +18,6 @@ public class LoginInterceptor implements HandlerInterceptor {
         //令牌验证
         String token = request.getHeader("Authorization");
         log.info("token: {}", token);
-        if (token == null) {
-            response.setStatus(401);
-            return false;
-        }
         //验证token
         try {
             Map<String,Object> claims = JwtUtil.parseToken(token);
