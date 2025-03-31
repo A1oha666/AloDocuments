@@ -10,6 +10,7 @@ import org.example.itheimabigevent.utils.MD5Util;
 import org.example.itheimabigevent.utils.ThreadLocalUtil;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,5 +80,30 @@ public class UserController {
         userService.updateAvatar(avatarUrl);
         return Result.success();
     }
+
+    @PatchMapping("/updatePwd")
+    public Result updatePwd(@RequestBody Map<String,String> params){
+        //1.校验参数
+        Map<String,Object> map = ThreadLocalUtil.get();
+        String username=(String) map.get("username");
+        String oldPwd=params.get("old_pwd");
+        String newPwd=params.get("new_pwd");
+        String rePwd =params.get("re_pwd");
+
+        if (!StringUtils.hasLength(oldPwd) ||!StringUtils.hasLength(newPwd) ||!StringUtils.hasLength(rePwd)){
+            return Result.error("密码不能为空!");
+        }
+
+        if (!MD5Util.getMD5String(oldPwd).equals(userService.findByUserName(username).getPassword())){
+            return Result.error("原密码不正确");
+        }
+
+        if(newPwd.equals(rePwd)){
+            userService.updatePwd(newPwd);
+        }
+        return Result.success();
+    }
+
+
 
 }

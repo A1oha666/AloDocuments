@@ -17,7 +17,7 @@ create table user (
 ) comment '用户表';
 
 -- 分类表
-create table category(
+create table categoryController(
     id int unsigned primary key auto_increment comment 'ID',
     category_name varchar(32) not null comment '分类名称',
     category_alias varchar(32) not null comment '分类别名',
@@ -37,6 +37,6 @@ create table article(
     create_user int unsigned not null comment '创建人ID',
     create_time datetime not null comment '创建时间',
     update_time datetime not null comment '修改时间',
-    constraint fk_article_category foreign key (category_id) references category(id),-- 外键约束
+    constraint fk_article_category foreign key (category_id) references categoryController(id),-- 外键约束
     constraint fk_article_user foreign key (create_user) references user(id) -- 外键约束
 );

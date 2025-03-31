@@ -20,4 +20,9 @@ public interface UserMapper {
     @Update("update user set user_pic=#{avatarUrl},update_time=now() where id=#{id}")
     //MySQL中的函数now()获取MySQL服务器上的时间
     void updateAvatar(String avatarUrl,Integer id);
+
+    //更新密码
+    @Update("update user set password=#{newPwd},update_time=now() where id=#{id}")
+    void updatePwd(String newPwd,Integer id);
+
 }

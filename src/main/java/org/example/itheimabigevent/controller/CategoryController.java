@@ -1,0 +1,42 @@
+package org.example.itheimabigevent.controller;
+
+import org.example.itheimabigevent.pojo.Category;
+import org.example.itheimabigevent.pojo.Result;
+import org.example.itheimabigevent.service.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/category")
+public class CategoryController {
+    @Autowired
+    private CategoryService categoryService;
+
+    @PostMapping()
+    public Result<Object> addCategory(@RequestBody @Validated/*数据校验*/ Category category) {
+        categoryService.add(category);
+        return Result.success("添加成功");
+    }
+
+    @GetMapping()
+    public Result<List<Category>> getCategory() {
+         return Result.success(categoryService.list());
+    }
+
+    @GetMapping("/detail")
+    public Result<Category> detail(@RequestParam Integer id) {
+        Category c = categoryService.findById(id);
+        if (c == null)
+            return Result.error("文章id不存在！");
+        return Result.success(c);
+    }
+
+    @PutMapping
+    public Result<Object> updateCategory(@RequestBody @Validated Category category) {
+        categoryService.updateCategory(category);
+        return Result.success();
+    }
+}
