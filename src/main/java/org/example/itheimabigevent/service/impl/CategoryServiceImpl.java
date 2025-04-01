@@ -1,5 +1,6 @@
 package org.example.itheimabigevent.service.impl;
 
+import org.example.itheimabigevent.DTO.CategoryDTO;
 import org.example.itheimabigevent.mapper.CategoryMapper;
 import org.example.itheimabigevent.pojo.Category;
 import org.example.itheimabigevent.service.CategoryService;
@@ -23,7 +24,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void add(Category category) {
+    public void add(CategoryDTO category) {
         category.setUpdateTime(LocalDateTime.now());
         category.setCreateTime(LocalDateTime.now());
 
@@ -44,4 +45,12 @@ public class CategoryServiceImpl implements CategoryService {
     public Category findById(Integer id) {
         return categoryMapper.findById(id);
     }
+
+    @Override
+    public void delete(Integer id) {
+
+        categoryMapper.delete(id);
+    }
+
+
 }
