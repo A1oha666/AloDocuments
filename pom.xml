@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.example</groupId>
-    <artifactId>itheima-bigevent</artifactId>
+    <artifactId>AloDocuments</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>itheima-bigevent</name>
     <description>itheima-bigevent</description>
